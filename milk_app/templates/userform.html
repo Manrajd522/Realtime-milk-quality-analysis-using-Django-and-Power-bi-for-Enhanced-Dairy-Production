@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}User{% endblock %}
+{% block navbar %}ADD USER{% endblock %}
+{% block content %}
+<div class="col-10 mx-auto card p-3 shadow-lg">
+    <div class="card shadow">
+        <div class="card-body">
+            <h5 class="card-title">Add New MilkMan</h5>
+            <div class="table-responsive">
+                <div class="row">
+                    <div class="col-md-6">
+                        {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-info" role="alert">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+
+                        <form  method="post">
+                            
+                            {% csrf_token %}
+                            <table class="table ">
+                                <tbody>
+                                    {{ user_form.as_table }}
+                                </tbody>
+                            </table>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 mt-4">
+    <div class="card shadow">
+        <div class="card-body">
+            <h5 class="card-title">All Users</h5>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Phone NO</th>
+                            <th>Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in all_users %}
+                        <tr>
+                            <td>{{ item.User_id }}</td>
+                            <td>{{ item.Name }}</td>
+                            <td>{{ item.Phone_No }}</td>
+                            <td>{{ item.Address }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

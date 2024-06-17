@@ -1,0 +1,68 @@
+{% extends "base.html" %} 
+{% block title %}total{% endblock %}
+{% block navbar %}TOTAL {% endblock %}
+{% block content %}
+    <div class = "col-11 mx-4 card p-3 shadow-lg">
+        <form method="post" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        User_id:<input type="text" name = "User"/>
+        From :<input type="date" name= "fromdate"/>
+        TO : <input type="date" name= "todate"/>
+           
+            <button type="submit">Submit</button>
+        </form>
+    </br>
+        
+                <h6>Name:-  {{Name.Name}}</h6>
+                <h6>Phone No:-  {{Name.Phone_No}}</h6>
+    </div>
+    <br/>
+    {% if submit %}
+    
+    <div class="col-11 mx-4 card p-3 shadow-lg">
+        <h5>Total Results</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Date</th>
+                <th>Quantity</th>
+                <th>Fat</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in submit %}
+            <tr>
+                <td>{{ record.user_id }}</td>
+                <td>{{ record.Date}}</td>
+                <td>{{ record.Quantity }}</td>
+                <td>{{ record.Fat }}</td>
+                <td>{{ record.Amount }}</td>
+            </tr>
+            {% endfor %}
+                <tr>
+            
+            <td><b></b></td>
+            <td><b></b></td>
+            <td><b>Total Quantity</b></td>
+            <td><b>Average Fat</b></td>
+            <td><b>Total Amount</b></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>{{ total_quantity }}</td>
+                <td>{{ average_fat }}</td>
+                <td>{{ total_amount }}</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+
+
+    
+    {% endif %}
+{% endblock %}

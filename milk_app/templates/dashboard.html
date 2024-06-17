@@ -1,0 +1,123 @@
+{% extends "base.html" %} 
+{% block title %}Dashboard{% endblock %}
+{% block navbar %}DASHBOARD{% endblock %}
+{% block content %}
+
+
+
+<section class="">
+
+    <h2 class="fw-bolder">Welcome, {{request.user.first_name}}&nbsp;{{request.user.last_name}}!</h2>
+    <hr>
+    <div class="row justify-content-center">
+        <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 px-1 pb-2">
+            <div class="card card-default rounded-0 shadow bg-primary bg-gradient border-0 text-light">
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row mx-0 w-100 align-items-center">
+                            <div class="col-3">
+                                <i class="fs-1 text-light fa fa-tshirt"></i>
+                            </div>
+                            <div class="col-9">
+                                <h1 class="text-end">{{ num_users }}</h2>
+                            </div>
+                            <div class="col-12 text-end"><b>Total Number Of Users</b></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 px-1 pb-2">
+            <div class="card card-default rounded-0 shadow bg-gradient bg-dark bg-opacity-75 text-light">
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row mx-0 w-100 align-items-center">
+                            <div class="col-3">
+                                <i class="fs-1 text-light fa fa-soap"></i>
+                            </div>
+                            <div class="col-9">
+                                <h1 class="text-end">{{ num_records }}</h2>
+                            </div>
+                            <div class="col-12 text-end"><b>number of Records</b></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 px-1 pb-2">
+            <div class="card card-default rounded-0 shadow bg-gradient bg-success bg-opacity-75 text-light">
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row mx-0 w-100 align-items-center">
+                            <div class="col-3">
+                                <i class="fs-1 text-light fa fa-file-invoice"></i>
+                            </div>
+                            <div class="col-9">
+                                <h1 class="text-end">{{ today_total_quantity|floatformat:2}}</h2>
+                            </div>
+                            <div class="col-12 text-end"><b>Today's Collection in Liters</b></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 px-1 pb-2">
+            <div class="card card-default rounded-0 shadow bg-gradient bg-warning bg-opacity-75 text-light">
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row mx-0 w-100 align-items-center">
+                            <div class="col-3">
+                                <i class="fs-1 text-light fa fa-coins"></i>
+                            </div>
+                            <div class="col-9">
+                                <h1 class="text-end">{{ today_sum_amount|floatformat:2 }}</h2>
+                            </div>
+                            <div class="col-12 text-end"><b>Todays Purchase</b></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+<div class = "col-11 mx-4 card p-3 shadow-lg">
+<section class="mt-4">
+    <canvas id="collectionChart"></canvas>
+</section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('{% url 'get_monthly_collection_data' %}')
+        .then(response => response.json())
+        .then(data => {
+            var ctx = document.getElementById('collectionChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                        label: 'Collection Over the Month',
+                        data: data,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+
+
+{% endblock %}

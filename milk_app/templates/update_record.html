@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Update Record{% endblock %}
+{% block content %}
+<h1>Update Record</h1>
+<form class="col-11 mx-auto card p-3 shadow-lg" method="post">
+    {% csrf_token %}
+    <table>
+                <thead>
+                    <tr>
+                        {% for field in form%}
+                        <th>{{ field.label }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% for field in form %}
+                        <td>{{ field }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+    
+    <button type="submit">Save</button>
+</form>
+<script>
+
+        window.addEventListener('load', function () {
+            function updateTotal() {
+                var quantityInput = document.getElementById("id_Quantity");
+                var fatInput = document.getElementById("id_Fat");
+                var amountInput = document.getElementById("id_Amount");
+
+                if (quantityInput.value !== "" && fatInput.value !== "") {
+                    var quantity = parseFloat(quantityInput.value);
+                    var fat = parseFloat(fatInput.value);
+                    var amount = quantity * fat * 7; // Assuming this is the calculation for Amount
+                    amountInput.value = amount.toFixed(3);
+                } else {
+                    amountInput.value = "";
+                }
+            }
+
+            document.getElementById("id_Quantity").addEventListener("change", updateTotal);
+            document.getElementById("id_Fat").addEventListener("change", updateTotal);
+        });
+    </script>
+{% endblock %}
